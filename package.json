@@ -9,6 +9,8 @@
     "preview": "vite preview",
     "test:e2e": "cypress run",
     "test:unit": "vitest",
+    "build_android_live": "ionic cap run android --livereload --external",
+    "build_android": "ionic cap build android",
     "lint": "eslint ."
   },
   "dependencies": {
