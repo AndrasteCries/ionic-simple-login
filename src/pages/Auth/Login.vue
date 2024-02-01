@@ -16,6 +16,7 @@ const isAuthenticated = computed(() => store.getters.isAuthenticated);
 function loginHandle() {
   if (password.value === login.value && login.value === 'admin') {
     store.dispatch('login', { username: login.value, password: password.value });
+    router.push('/profile');
   }
 }
 

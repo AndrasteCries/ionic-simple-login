@@ -19,7 +19,7 @@ import '@ionic/vue/css/display.css';
 
 import './theme/variables.css';
 
-import store from './store';
+import store from './storage/store';
 
 const app = createApp(App)
   .use(store)
