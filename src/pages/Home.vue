@@ -1,11 +1,15 @@
 <script setup lang="ts">
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/vue';
+import { IonMenuButton, IonButtons, IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/vue';
+import Menu from "@/components/Menu.vue";
 </script>
 
 <template>
-  <ion-page>
+  <ion-page id="main-content">
     <ion-header :translucent="true">
       <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-menu-button></ion-menu-button>
+        </ion-buttons>
         <ion-title>Home</ion-title>
       </ion-toolbar>
     </ion-header>

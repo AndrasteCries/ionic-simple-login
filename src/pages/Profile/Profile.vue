@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useStore } from 'vuex';
-import {  IonPage,  IonHeader,  IonToolbar,  IonButtons,  IonBackButton,  IonContent,  IonList,  IonItem,  IonTitle,
+import {
+  IonPage, IonHeader, IonToolbar, IonButtons, IonBackButton, IonContent, IonList, IonItem, IonTitle, IonMenuButton,
 } from '@ionic/vue';
 import { useRouter } from 'vue-router';
 const router = useRouter();
@@ -19,9 +20,12 @@ const logOutUser = () => {};
 </script>
 
 <template>
-  <ion-page>
+  <ion-page id="main-content">
     <ion-header :translucent="true">
-      <ion-toolbar color="primary">
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-menu-button></ion-menu-button>
+        </ion-buttons>
         <ion-title>Profile</ion-title>
       </ion-toolbar>
     </ion-header>

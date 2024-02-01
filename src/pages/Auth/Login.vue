@@ -1,6 +1,19 @@
 <script setup lang="ts">
 
-import {IonButton, IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonInput, IonItem, IonList, IonCol, IonRow} from "@ionic/vue";
+import {
+  IonButton,
+  IonContent,
+  IonHeader,
+  IonPage,
+  IonTitle,
+  IonToolbar,
+  IonInput,
+  IonItem,
+  IonList,
+  IonCol,
+  IonRow,
+  IonButtons, IonMenuButton
+} from "@ionic/vue";
 import { ref, computed } from "vue"
 import {useStore} from "vuex";
 import { useRouter } from 'vue-router';
@@ -20,16 +33,15 @@ function loginHandle() {
   }
 }
 
-function logoutHandle() {
-  store.dispatch('logout');
-}
-
 </script>
 
 <template>
-  <ion-page>
+  <ion-page id="main-content">
     <ion-header :translucent="true">
       <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-menu-button></ion-menu-button>
+        </ion-buttons>
         <ion-title>Login</ion-title>
       </ion-toolbar>
     </ion-header>
