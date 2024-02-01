@@ -1,3 +1,30 @@
+<script setup lang="ts">
+
+import {IonButton, IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonInput, IonItem, IonList, IonCol, IonRow} from "@ionic/vue";
+import { ref, computed } from "vue"
+import {useStore} from "vuex";
+import { useRouter } from 'vue-router';
+
+const login = ref("admin");
+const password = ref("admin");
+
+const router = useRouter();
+const store = useStore();
+
+const isAuthenticated = computed(() => store.getters.isAuthenticated);
+
+function loginHandle() {
+  if (password.value === login.value && login.value === 'admin') {
+    store.dispatch('login', { username: login.value, password: password.value });
+  }
+}
+
+function logoutHandle() {
+  store.dispatch('logout');
+}
+
+</script>
+
 <template>
   <ion-page>
     <ion-header :translucent="true">
@@ -15,7 +42,6 @@
                 v-model="login"
                 name="username"
                 type="text"
-                autocapitalize="off"
                 required
             ></ion-input>
           </ion-item>
@@ -40,35 +66,19 @@
           </ion-col>
           <ion-col>
             <ion-button
-                href="/register"
+                @click="() => router.push('/profile')"
                 color="light"
                 expand="block">
               Signup
             </ion-button>
+
+            <div v-if="isAuthenticated"><h1>YA ZALOGINILSYA</h1></div>
           </ion-col>
         </ion-row>
       </form>
     </ion-content>
   </ion-page>
 </template>
-
-<script setup lang="ts">
-
-import {IonButton, IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonInput, IonItem, IonList, IonCol, IonRow} from "@ionic/vue";
-import { ref } from "vue"
-
-const login = ref("niga");
-const password = ref("niga");
-
-const emit = defineEmits();
-
-function loginHandle(event: Event){
-   if (password.value === login.value && login.value === "admin"){
-
-   }
-}
-
-</script>
 
 <style scoped>
 #container strong {

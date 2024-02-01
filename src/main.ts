@@ -19,7 +19,10 @@ import '@ionic/vue/css/display.css';
 
 import './theme/variables.css';
 
+import store from './store';
+
 const app = createApp(App)
+  .use(store)
   .use(IonicVue)
   .use(router);
   

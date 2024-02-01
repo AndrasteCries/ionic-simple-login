@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton  } from '@ionic/vue';
-
-
+import { useRouter } from 'vue-router';
+const router = useRouter();
 
 
 </script>
@@ -24,8 +24,8 @@ import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonButton  } from
       <div id="container">
         <strong>Do you have an account? </strong>
         <p>Login or register</p>
-        <ion-button size="large" href="/login">Login</ion-button>
-        <ion-button size="large" href="/register">Register</ion-button>
+        <ion-button size="large" @click="() => router.push('/login')">Login</ion-button>
+        <ion-button size="large" @click="() => router.push('/register')">Register</ion-button>
       </div>
     </ion-content>
   </ion-page>
