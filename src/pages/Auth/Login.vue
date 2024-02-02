@@ -84,8 +84,6 @@ function loginHandle() {
                 expand="block">
               Signup
             </ion-button>
-
-            <div v-if="isAuthenticated"><h1>YA ZALOGINILSYA</h1></div>
           </ion-col>
         </ion-row>
       </form>

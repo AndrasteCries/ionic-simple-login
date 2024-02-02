@@ -39,7 +39,7 @@ const logout = () => {
           Main menu
         </ion-list-header>
         <ion-menu-toggle :auto-hide="false">
-          <ion-item button @click="navigate('/profile')">
+          <ion-item button @click="navigate('/home')">
             <ion-icon slot="start" :icon="ionIcons.homeSharp"></ion-icon>
             <ion-label>
               Home
