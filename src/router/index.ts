@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from '@ionic/vue-router';
 import { RouteRecordRaw } from 'vue-router';
-import store from '@/storage/store';
+import { useStore } from 'vuex';
+import store from '@/stores/modules/store';
 import Profile from '@/pages/Profile/Profile.vue';
 import Login from "@/pages/Auth/Login.vue";
 import Home from "@/pages/Home.vue";
@@ -34,7 +35,8 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const isAuthenticated = store.getters.isAuthenticated;
+  const store = useStore();
+  const isAuthenticated = store.getters['store/isAuthenticated'];
 
   if (to.path === '/' && isAuthenticated) {
     next('/profile');

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import {computed, ref} from 'vue';
 import { useStore } from 'vuex';
 import {
   IonPage,
@@ -13,19 +13,23 @@ import {
   IonMenuButton,
   IonButton,
   IonInput,
-  IonTextarea
+  IonTextarea,
+    IonLabel
 } from '@ionic/vue';
+
 import { useRouter } from 'vue-router';
-import * as events from "events";
 const router = useRouter();
 
 const store = useStore();
 const editMode = ref(false);
 
-const avatarPath = ref("http://www.gravatar.com/avatar?d=mm&s=140");
-const nickname = ref("Admin");
-const email = ref("1andraste1@gmail.com");
-const description = ref("Im best");
+const userInfo = computed(() => store.getters['user/getUser']);
+
+const avatarPath = computed(() => userInfo.value.avatarAddress);
+const nickname = computed(() => userInfo.value.username);
+const email = computed(() => userInfo.value.email);
+const description = computed(() => userInfo.value.description);
+
 
 const editedAvatar = ref(avatarPath.value);
 const editedNickname = ref(nickname.value);
@@ -36,17 +40,17 @@ function handleEditMode(){
 }
 
 function saveHandle() {
-  avatarPath.value = editedAvatar.value;
-  nickname.value = editedNickname.value;
-  email.value = editedEmail.value;
-  description.value = editedDescription.value;
-
+  store.dispatch('user/updateUser',
+      {
+        username: editedNickname.value,
+        email: editedEmail.value,
+        description:editedDescription.value,
+        avatarAddress: editedAvatar.value
+      });
   editMode.value = false;
+
+  console.log(userInfo.value);
 }
-
-const updatePicture = () => {};
-const logOutUser = () => {};
-
 
 </script>
 
@@ -65,12 +69,10 @@ const logOutUser = () => {};
         <div class="profile-div">
           <img src="http://www.gravatar.com/avatar?d=mm&s=140" alt="avatar" />
           <ion-item>
-            <ion-label position="floating">Nickname</ion-label>
-            <ion-input v-model="editedNickname"></ion-input>
+            <ion-input  label="Nickname" v-model="editedNickname"></ion-input>
           </ion-item>
           <ion-item>
-            <ion-label position="floating">Email</ion-label>
-            <ion-input v-model="editedEmail"></ion-input>
+            <ion-input  label="Email" v-model="editedEmail"></ion-input>
           </ion-item>
           <div id="dscrp-wrapper">
             <h3>About me</h3>
@@ -111,14 +113,6 @@ const logOutUser = () => {};
                 color="light"
                 expand="block">
                 Edit profile
-              </ion-button>
-            </ion-item>
-            <ion-item>
-              <ion-button
-                @click="() => router.push('/')"
-                color="light"
-                expand="block">
-                Logout
               </ion-button>
             </ion-item>
           </ion-list>

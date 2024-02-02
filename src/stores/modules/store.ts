@@ -35,9 +35,10 @@ const getters = {
     getToken: (state: AuthState) => state.token,
 };
 
-export default createStore({
+export default{
+    namespaced: true,
     state,
     mutations,
     actions,
     getters,
-});
+};

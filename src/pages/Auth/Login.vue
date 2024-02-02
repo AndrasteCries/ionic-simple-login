@@ -14,8 +14,8 @@ import {
   IonRow,
   IonButtons, IonMenuButton
 } from "@ionic/vue";
-import { ref, computed } from "vue"
-import {useStore} from "vuex";
+import { ref } from "vue"
+import { useStore } from "vuex";
 import { useRouter } from 'vue-router';
 
 const login = ref("admin");
@@ -24,11 +24,9 @@ const password = ref("admin");
 const router = useRouter();
 const store = useStore();
 
-const isAuthenticated = computed(() => store.getters.isAuthenticated);
-
 function loginHandle() {
   if (password.value === login.value && login.value === 'admin') {
-    store.dispatch('login', { username: login.value, password: password.value });
+    store.dispatch('store/login', { username: login.value, password: password.value });
     router.push('/profile');
   }
 }

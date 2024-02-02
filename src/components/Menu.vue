@@ -18,16 +18,17 @@ const router = useRouter();
 const store = useStore();
 const loggedIn = ref(false);
 
-const isAuthenticated = computed(() => store.getters.isAuthenticated);
+const isAuthenticated = computed(() => store.getters['store/isAuthenticated']);
 
 const navigate = (url: string) => {
   router.push(url);
 }
 
 const logout = () => {
-  store.dispatch('logout');
+  store.dispatch('store/logout');
   navigate('/home')
 };
+
 
 </script>
 
