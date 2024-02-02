@@ -2,20 +2,51 @@
 import { ref } from 'vue';
 import { useStore } from 'vuex';
 import {
-  IonPage, IonHeader, IonToolbar, IonButtons, IonBackButton, IonContent, IonList, IonItem, IonTitle, IonMenuButton,
+  IonPage,
+  IonHeader,
+  IonToolbar,
+  IonButtons,
+  IonContent,
+  IonList,
+  IonItem,
+  IonTitle,
+  IonMenuButton,
+  IonButton,
+  IonInput,
+  IonTextarea
 } from '@ionic/vue';
 import { useRouter } from 'vue-router';
+import * as events from "events";
 const router = useRouter();
 
 const store = useStore();
+const editMode = ref(false);
+
+const avatarPath = ref("http://www.gravatar.com/avatar?d=mm&s=140");
+const nickname = ref("Admin");
+const email = ref("1andraste1@gmail.com");
+const description = ref("Im best");
+
+const editedAvatar = ref(avatarPath.value);
+const editedNickname = ref(nickname.value);
+const editedEmail = ref(email.value);
+const editedDescription = ref(description.value);
+function handleEditMode(){
+  editMode.value = !editMode.value;
+}
+
+function saveHandle() {
+  avatarPath.value = editedAvatar.value;
+  nickname.value = editedNickname.value;
+  email.value = editedEmail.value;
+  description.value = editedDescription.value;
+
+  editMode.value = false;
+}
 
 const updatePicture = () => {};
-const changeUsername = () => {};
-const changePassword = () => {};
-const support = () => {};
 const logOutUser = () => {};
 
-// const username = ref(storage.state.user.username);
 
 </script>
 
@@ -29,18 +60,69 @@ const logOutUser = () => {};
         <ion-title>Profile</ion-title>
       </ion-toolbar>
     </ion-header>
+    <ion-content :translucent="true">
+      <form  v-if="editMode" novalidate @submit.prevent="saveHandle">
+        <div class="profile-div">
+          <img src="http://www.gravatar.com/avatar?d=mm&s=140" alt="avatar" />
+          <ion-item>
+            <ion-label position="floating">Nickname</ion-label>
+            <ion-input v-model="editedNickname"></ion-input>
+          </ion-item>
+          <ion-item>
+            <ion-label position="floating">Email</ion-label>
+            <ion-input v-model="editedEmail"></ion-input>
+          </ion-item>
+          <div id="dscrp-wrapper">
+            <h3>About me</h3>
+            <div id="dscrp">
+              <ion-textarea :auto-grow="true" id="text-area" v-model="editedDescription" aria-label="Comments" label-placement="floating" :counter="true" maxlength="200"></ion-textarea>
+            </div>
+          </div>
+          <ion-list inset lines="none" id="btns">
+            <ion-item>
+              <ion-button @click="handleEditMode" color="light" expand="block">
+                Cancel
+              </ion-button>
+            </ion-item>
+            <ion-item>
+              <ion-button type="submit" color="light" expand="block">
+                Save
+              </ion-button>
+            </ion-item>
+          </ion-list>
+        </div>
 
-    <ion-content :translucent="true" class="outer-content page-account">
-      <div>
-        <img src="http://www.gravatar.com/avatar?d=mm&s=140" alt="avatar" />
-        <h2>Admin</h2>
-        <ion-list inset>
-          <ion-item @click="updatePicture">Update Picture</ion-item>
-          <ion-item @click="changeUsername">Change Username</ion-item>
-          <ion-item @click="changePassword">Change Password</ion-item>
-          <ion-item @click="support">Support</ion-item>
-          <ion-item @click="logOutUser">Logout</ion-item>
-        </ion-list>
+      </form>
+      <div v-if="!editMode">
+        <div class="profile-div">
+          <img src="http://www.gravatar.com/avatar?d=mm&s=140" alt="avatar" />
+          <h2>{{nickname}}</h2>
+          <p>email: {{email}} </p>
+          <div id="dscrp-wrapper">
+            <h3>About me</h3>
+            <div id="dscrp">
+              <p>{{description}}</p>
+            </div>
+          </div>
+          <ion-list inset lines="none" id="btns">
+            <ion-item>
+              <ion-button
+                @click="handleEditMode"
+                color="light"
+                expand="block">
+                Edit profile
+              </ion-button>
+            </ion-item>
+            <ion-item>
+              <ion-button
+                @click="() => router.push('/')"
+                color="light"
+                expand="block">
+                Logout
+              </ion-button>
+            </ion-item>
+          </ion-list>
+        </div>
       </div>
     </ion-content>
   </ion-page>
@@ -55,9 +137,7 @@ const logOutUser = () => {};
 #container p {
   font-size: 16px;
   line-height: 22px;
-
   color: #8c8c8c;
-
   margin: 0;
 }
 
@@ -65,8 +145,42 @@ const logOutUser = () => {};
   text-decoration: none;
 }
 
+.profile-div{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 20px;
+}
 img {
   max-width: 140px;
   border-radius: 50%;
 }
+
+#dscrp-wrapper{
+  text-align: center;
+  width: 80%
+}
+
+#dscrp{
+  height: 200px;
+  border: 2px solid black;
+  border-radius: 20px;
+  padding: 15px;
+  text-align: justify;
+  overflow: auto;
+}
+
+#btns{
+  display: flex;
+}
+
+#text-area{
+  height: 95%;
+}
+
+p{
+  margin: 0;
+}
+
+
 </style>

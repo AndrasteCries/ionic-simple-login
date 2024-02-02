@@ -1,5 +1,4 @@
 import { createStore, Commit } from 'vuex';
-
 interface AuthState {
     isAuthenticated: boolean;
     token: string | null;
