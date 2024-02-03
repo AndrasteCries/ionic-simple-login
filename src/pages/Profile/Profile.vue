@@ -1,6 +1,8 @@
 <script setup lang="ts">
-import {computed, ref} from 'vue';
+import { computed, ref } from 'vue';
 import { useStore } from 'vuex';
+import * as ionIcons from 'ionicons/icons';
+import { usePhotoGallery, UserPhoto } from '@/composables/usePhotoGallery';
 import {
   IonPage,
   IonHeader,
@@ -14,11 +16,13 @@ import {
   IonButton,
   IonInput,
   IonTextarea,
-    IonLabel
+  IonIcon,
+  IonFabButton,
+  IonActionSheet,
 } from '@ionic/vue';
+import {logIn} from "ionicons/icons";
 
-import { useRouter } from 'vue-router';
-const router = useRouter();
+const { photos, lastImage, takePhoto } = usePhotoGallery();
 
 const store = useStore();
 const editMode = ref(false);
@@ -30,26 +34,50 @@ const nickname = computed(() => userInfo.value.username);
 const email = computed(() => userInfo.value.email);
 const description = computed(() => userInfo.value.description);
 
-
 const editedAvatar = ref(avatarPath.value);
 const editedNickname = ref(nickname.value);
 const editedEmail = ref(email.value);
 const editedDescription = ref(description.value);
+
+const actionSheetButtons = [
+  {
+    text: 'Gallery',
+    handler: () => cameraPhoto(true),
+  },
+  {
+    text: 'Camera',
+    handler: () => cameraPhoto(false),
+  },
+  {
+    text: 'Cancel',
+    role: 'cancel',
+    data: {
+      action: 'cancel',
+    },
+  }];
+
 function handleEditMode(){
   editMode.value = !editMode.value;
 }
 
 function saveHandle() {
+  console.log(userInfo.value)
   store.dispatch('user/updateUser',
       {
         username: editedNickname.value,
         email: editedEmail.value,
-        description:editedDescription.value,
+        description: editedDescription.value,
         avatarAddress: editedAvatar.value
       });
   editMode.value = false;
-
-  console.log(userInfo.value);
+  console.log(userInfo.value)
+}
+// 0 - camera 1 - gallery
+function cameraPhoto(mode: boolean){
+  takePhoto(mode).then(() => {
+    editedAvatar.value = lastImage.value?.webviewPath;
+    console.log(editedAvatar.value);
+  });
 }
 
 </script>
@@ -67,7 +95,11 @@ function saveHandle() {
     <ion-content :translucent="true">
       <form  v-if="editMode" novalidate @submit.prevent="saveHandle">
         <div class="profile-div">
-          <img src="http://www.gravatar.com/avatar?d=mm&s=140" alt="avatar" />
+          <img :src="editedAvatar" alt="edited-avatar" />
+          <ion-fab-button id="photo-btn">
+            <ion-icon :icon="ionIcons.camera"></ion-icon>
+          </ion-fab-button>
+          <ion-action-sheet trigger="photo-btn" header="Actions" :buttons="actionSheetButtons"></ion-action-sheet>
           <ion-item>
             <ion-input  label="Nickname" v-model="editedNickname"></ion-input>
           </ion-item>
@@ -95,9 +127,10 @@ function saveHandle() {
         </div>
 
       </form>
+
       <div v-if="!editMode">
         <div class="profile-div">
-          <img src="http://www.gravatar.com/avatar?d=mm&s=140" alt="avatar" />
+          <img :src="avatarPath" alt="avatar" />
           <h2>{{nickname}}</h2>
           <p>email: {{email}} </p>
           <div id="dscrp-wrapper">
@@ -176,5 +209,8 @@ p{
   margin: 0;
 }
 
+#photo-btn{
+  --box-shadow: none;
+}
 
 </style>

@@ -21,6 +21,9 @@ import './theme/variables.css';
 
 import store from '@/stores';
 
+import { defineCustomElements } from '@ionic/pwa-elements/loader';
+defineCustomElements(window);
+
 const app = createApp(App)
   .use(store)
   .use(IonicVue)
