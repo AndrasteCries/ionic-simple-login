@@ -1,4 +1,5 @@
-import { createStore, Commit } from 'vuex';
+import {Commit} from 'vuex';
+
 interface AuthState {
     isAuthenticated: boolean;
     token: string | null;
@@ -21,7 +22,7 @@ const mutations = {
 };
 
 const actions = {
-    login({ commit }: { commit: Commit }, credentials: { username: string; password: string }) {
+    login({ commit }: { commit: Commit }) {
         const token = 'exampleToken';
         commit('setAuth', token);
     },

@@ -21,6 +21,8 @@ import {
   IonToolbar,
 } from '@ionic/vue';
 
+import {IMyIonInputs} from '@/components/interfaces/IMyIonInputs'
+
 const { lastImage, takePhoto } = usePhotoGallery();
 
 const store = useStore();
@@ -38,12 +40,6 @@ const editedNickname = ref(nickname.value);
 const editedEmail = ref(email.value);
 const editedDescription = ref(description.value);
 
-
-const actionSheetButtons = [
-  { text: 'Gallery', handler: () => cameraPhoto(true) },
-  { text: 'Camera', handler: () => cameraPhoto(false) },
-];
-
 const handleEditMode = () => (editMode.value = !editMode.value);
 
 const saveHandle = () => {
@@ -53,7 +49,7 @@ const saveHandle = () => {
     nickname: editedDescription.value,
     avatarPath: editedAvatar.value,
   });
-
+  console.log(userInfo.value)
   editMode.value = false;
 }
 
@@ -62,6 +58,21 @@ async function cameraPhoto(mode: boolean) {
   await takePhoto(mode);
   editedAvatar.value = lastImage.value?.webviewPath;
 }
+
+interface ActionButton{
+  text: string,
+  handler: () => void,
+}
+
+const actionSheetButtons: ActionButton[] = [
+  { text: 'Gallery', handler: () => cameraPhoto(true) },
+  { text: 'Camera', handler: () => cameraPhoto(false) },
+];
+
+const ionInputs: IMyIonInputs[] = [
+  { label: "Nickname", vModel: editedNickname.value, name: "nickname", type: "text", labelPlacement: "stacked" },
+  { label: "Email", vModel: editedEmail.value, name: "email", type: "text", labelPlacement: "stacked" },
+];
 
 </script>
 
@@ -80,19 +91,30 @@ async function cameraPhoto(mode: boolean) {
         <div class="profile-div">
           <img :src="editedAvatar" alt="edited-avatar" />
           <ion-fab-button id="photo-btn">
-            <ion-icon :icon="ionIcons.camera"></ion-icon>
+            <ion-icon :icon="ionIcons.camera" />
           </ion-fab-button>
-          <ion-action-sheet trigger="photo-btn" header="Actions" :buttons="actionSheetButtons"></ion-action-sheet>
-          <ion-item>
-            <ion-input  label="Nickname" v-model="editedNickname"></ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-input  label="Email" v-model="editedEmail"></ion-input>
+          <ion-action-sheet trigger="photo-btn" header="Actions" :buttons="actionSheetButtons"/>
+          <ion-item v-for="(input, index) in ionInputs" :key="index">
+            <ion-input
+                :label-placement="input.labelPlacement"
+                :label="input.label"
+                v-model="input.vModel"
+                :name="input.name"
+                :type="input.type"
+            />
           </ion-item>
           <div id="dscrp-wrapper">
             <h3>About me</h3>
             <div id="dscrp">
-              <ion-textarea :auto-grow="true" id="text-area" v-model="editedDescription" aria-label="Comments" label-placement="floating" :counter="true" maxlength="200"></ion-textarea>
+              <ion-textarea
+                  :auto-grow="true"
+                  id="text-area"
+                  v-model="editedDescription"
+                  aria-label="Comments"
+                  label-placement="floating"
+                  :counter="true"
+                  maxlength="200"
+              />
             </div>
           </div>
           <ion-list inset lines="none" id="btns">
@@ -168,7 +190,7 @@ img {
 
 #dscrp-wrapper{
   text-align: center;
-  width: 80%
+  width: 300px;
 }
 
 #dscrp{
@@ -182,6 +204,7 @@ img {
 
 #btns{
   display: flex;
+  --background: none;
 }
 
 #text-area{
@@ -195,6 +218,12 @@ p{
 #photo-btn{
   margin: 10px;
   --box-shadow: none;
+}
+ion-item, ion-button {
+  --background: none;
+}
+ion-list{
+  background: none;
 }
 
 </style>

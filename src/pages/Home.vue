@@ -32,6 +32,7 @@ import {IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, Ion
 #container {
   text-align: center;
 
+  padding: 20px;
   position: absolute;
   left: 0;
   right: 0;
