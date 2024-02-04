@@ -1,17 +1,17 @@
 import { createStore, Commit } from 'vuex';
 
 interface UserState {
-    username: string;
+    nickname: string;
     email: string;
     description: string;
-    avatarAddress: string;
+    avatarPath: string;
 }
 
 const state: UserState = {
-    username: 'admin',
+    nickname: 'admin',
     email: 'admin@gmail.com',
     description: 'best admin',
-    avatarAddress: 'http://www.gravatar.com/avatar?d=mm&s=140',
+    avatarPath: 'http://www.gravatar.com/avatar?d=mm&s=140',
 };
 
 const mutations = {
@@ -19,10 +19,10 @@ const mutations = {
         Object.assign(state, user);
     },
     clearUser(state: UserState) {
-        state.username = '';
+        state.nickname = '';
         state.email = '';
         state.description = '';
-        state.avatarAddress = '';
+        state.avatarPath = '';
     },
 };
 

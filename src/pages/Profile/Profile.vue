@@ -2,7 +2,7 @@
 import { computed, ref } from 'vue';
 import { useStore } from 'vuex';
 import * as ionIcons from 'ionicons/icons';
-import { usePhotoGallery, UserPhoto } from '@/composables/usePhotoGallery';
+import { usePhotoGallery } from '@/composables/usePhotoGallery';
 import {
   IonPage,
   IonHeader,
@@ -20,17 +20,16 @@ import {
   IonFabButton,
   IonActionSheet,
 } from '@ionic/vue';
-import {logIn} from "ionicons/icons";
 
-const { photos, lastImage, takePhoto } = usePhotoGallery();
+const { lastImage, takePhoto } = usePhotoGallery();
 
 const store = useStore();
 const editMode = ref(false);
 
 const userInfo = computed(() => store.getters['user/getUser']);
 
-const avatarPath = computed(() => userInfo.value.avatarAddress);
-const nickname = computed(() => userInfo.value.username);
+const avatarPath = computed(() => userInfo.value.avatarPath);
+const nickname = computed(() => userInfo.value.nickname);
 const email = computed(() => userInfo.value.email);
 const description = computed(() => userInfo.value.description);
 
@@ -39,45 +38,30 @@ const editedNickname = ref(nickname.value);
 const editedEmail = ref(email.value);
 const editedDescription = ref(description.value);
 
-const actionSheetButtons = [
-  {
-    text: 'Gallery',
-    handler: () => cameraPhoto(true),
-  },
-  {
-    text: 'Camera',
-    handler: () => cameraPhoto(false),
-  },
-  {
-    text: 'Cancel',
-    role: 'cancel',
-    data: {
-      action: 'cancel',
-    },
-  }];
 
-function handleEditMode(){
-  editMode.value = !editMode.value;
-}
+const actionSheetButtons = [
+  { text: 'Gallery', handler: () => cameraPhoto(true) },
+  { text: 'Camera', handler: () => cameraPhoto(false) },
+  { text: 'Cancel', role: 'cancel', data: { action: 'cancel' } }
+];
+
+const handleEditMode = () => (editMode.value = !editMode.value);
 
 function saveHandle() {
-  console.log(userInfo.value)
-  store.dispatch('user/updateUser',
-      {
-        username: editedNickname.value,
-        email: editedEmail.value,
-        description: editedDescription.value,
-        avatarAddress: editedAvatar.value
-      });
-  editMode.value = false;
-  console.log(userInfo.value)
-}
-// 0 - camera 1 - gallery
-function cameraPhoto(mode: boolean){
-  takePhoto(mode).then(() => {
-    editedAvatar.value = lastImage.value?.webviewPath;
-    console.log(editedAvatar.value);
+  store.dispatch('user/updateUser', {
+    username: editedNickname.value,
+    email: editedEmail.value,
+    nickname: editedDescription.value,
+    avatarPath: editedAvatar.value,
   });
+
+  editMode.value = false;
+}
+
+// 0 - camera 1 - gallery
+async function cameraPhoto(mode: boolean) {
+  await takePhoto(mode);
+  editedAvatar.value = lastImage.value?.webviewPath;
 }
 
 </script>
@@ -210,6 +194,7 @@ p{
 }
 
 #photo-btn{
+  margin: 10px;
   --box-shadow: none;
 }
 
