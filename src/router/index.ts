@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory } from '@ionic/vue-router';
 import { RouteRecordRaw } from 'vue-router';
-import { useStore } from 'vuex';
-import store from '@/stores/modules/store';
+import store from '@/stores/index';
 import Profile from '@/pages/Profile/Profile.vue';
 import Login from "@/pages/Auth/Login.vue";
 import Home from "@/pages/Home.vue";
+import Register from "@/pages/Auth/Register.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -27,6 +27,11 @@ const routes: Array<RouteRecordRaw> = [
     name: 'Login',
     component: Login
   },
+  {
+    path: '/register',
+    name: 'Register',
+    component: Register
+  }
 ]
 
 const router = createRouter({
@@ -35,7 +40,6 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const store = useStore();
   const isAuthenticated = store.getters['store/isAuthenticated'];
 
   if (to.path === '/' && isAuthenticated) {

@@ -12,7 +12,9 @@ import {
   IonList,
   IonCol,
   IonRow,
-  IonButtons, IonMenuButton
+  IonButtons,
+  IonMenuButton,
+
 } from "@ionic/vue";
 import { ref } from "vue"
 import { useStore } from "vuex";
@@ -77,7 +79,7 @@ function loginHandle() {
           </ion-col>
           <ion-col>
             <ion-button
-                @click="() => router.push('/profile')"
+                @click="() => router.push('/register')"
                 color="light"
                 expand="block">
               Signup
