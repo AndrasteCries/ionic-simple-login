@@ -1,4 +1,4 @@
-import { createStore, Commit } from 'vuex';
+import { Commit } from 'vuex';
 
 interface UserState {
     nickname: string;
