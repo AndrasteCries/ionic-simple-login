@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { IonMenuButton, IonButtons, IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/vue';
-import Menu from "@/components/Menu.vue";
+import {IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, IonToolbar} from '@ionic/vue';
 </script>
 
 <template>
@@ -8,7 +7,7 @@ import Menu from "@/components/Menu.vue";
     <ion-header :translucent="true">
       <ion-toolbar>
         <ion-buttons slot="start">
-          <ion-menu-button></ion-menu-button>
+          <ion-menu-button />
         </ion-buttons>
         <ion-title>Home</ion-title>
       </ion-toolbar>
@@ -23,6 +22,7 @@ import Menu from "@/components/Menu.vue";
 
       <div id="container">
         <strong>Hello!</strong>
+        <p>To get to your profile first register or log in, use the menu in the upper left corner to navigate to your profile!</p>
       </div>
     </ion-content>
   </ion-page>

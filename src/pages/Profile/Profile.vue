@@ -1,24 +1,24 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
-import { useStore } from 'vuex';
+import {computed, ref} from 'vue';
+import {useStore} from 'vuex';
 import * as ionIcons from 'ionicons/icons';
-import { usePhotoGallery } from '@/composables/usePhotoGallery';
+import {usePhotoGallery} from '@/composables/usePhotoGallery';
 import {
-  IonPage,
-  IonHeader,
-  IonToolbar,
+  IonActionSheet,
+  IonButton,
   IonButtons,
   IonContent,
-  IonList,
-  IonItem,
-  IonTitle,
-  IonMenuButton,
-  IonButton,
-  IonInput,
-  IonTextarea,
-  IonIcon,
   IonFabButton,
-  IonActionSheet,
+  IonHeader,
+  IonIcon,
+  IonInput,
+  IonItem,
+  IonList,
+  IonMenuButton,
+  IonPage,
+  IonTextarea,
+  IonTitle,
+  IonToolbar,
 } from '@ionic/vue';
 
 const { lastImage, takePhoto } = usePhotoGallery();
@@ -42,12 +42,11 @@ const editedDescription = ref(description.value);
 const actionSheetButtons = [
   { text: 'Gallery', handler: () => cameraPhoto(true) },
   { text: 'Camera', handler: () => cameraPhoto(false) },
-  { text: 'Cancel', role: 'cancel', data: { action: 'cancel' } }
 ];
 
 const handleEditMode = () => (editMode.value = !editMode.value);
 
-function saveHandle() {
+const saveHandle = () => {
   store.dispatch('user/updateUser', {
     username: editedNickname.value,
     email: editedEmail.value,
