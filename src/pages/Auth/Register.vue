@@ -1,22 +1,23 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
-import { useStore } from 'vuex';
+import {computed, ref} from 'vue';
+import {useStore} from 'vuex';
 import {
-  IonPage,
-  IonHeader,
-  IonToolbar,
+  IonButton,
   IonButtons,
   IonContent,
-  IonList,
-  IonItem,
-  IonTitle,
-  IonMenuButton,
-  IonButton,
+  IonHeader,
   IonInput,
+  IonItem,
+  IonList,
+  IonMenuButton,
+  IonPage,
+  IonTitle,
   IonToast,
+  IonToolbar,
 } from '@ionic/vue';
 
-import { useRouter } from "vue-router";
+import {IMyIonInputs} from '@/components/interfaces/IMyIonInputs'
+import {useRouter} from "vue-router";
 
 const store = useStore();
 const router = useRouter();
@@ -30,13 +31,8 @@ const submitted = ref(false);
 const showToast = ref(false);
 const toastMessage = ref("");
 
-const usernameValid = computed(() => {
-  return username.value.length >= 4;
-});
-
-const passwordValid = computed(() => {
-  return password.value.length >= 8 && password.value == repeatPassword.value;
-});
+const usernameValid = computed(() => username.value.length >= 4);
+const passwordValid = computed(() => password.value.length >= 8 && password.value === repeatPassword.value);
 
 const onSignup = () => {
   submitted.value = true;
@@ -45,31 +41,39 @@ const onSignup = () => {
     toastMessage.value = "Successfully signed up!";
     showToast.value = true;
 
-    setTimeout(() => {
-      showToast.value = false;
-    }, 2000);
+    resetForm();
 
-    username.value = "";
-    password.value = "";
     store.dispatch('store/login', { username: email.value, password: password.value });
     router.push('/profile');
   } else if (!usernameValid.value) {
     toastMessage.value = "Incorrect username!";
     showToast.value = true;
 
-    setTimeout(() => {
-      showToast.value = false;
-    }, 2000);
+    resetForm();
   } else {
     toastMessage.value = "Incorrect password!";
     showToast.value = true;
 
-    setTimeout(() => {
-      showToast.value = false;
-    }, 2000);
+    resetForm();
   }
 };
 
+const resetForm = () => {
+  setTimeout(() => {
+    showToast.value = false;
+    username.value = "";
+    password.value = "";
+    repeatPassword.value = "";
+  }, 2000);
+};
+
+
+const ionInputs: IMyIonInputs[] = [
+  { label: "Email", vModel: "email", name: "email", type: "text", labelPlacement: "stacked" },
+  { label: "Username", vModel: "username", name: "username", type: "text", labelPlacement: "stacked" },
+  { label: "Password", vModel: "password", name: "password", type: "password", labelPlacement: "stacked" },
+  { label: "Repeat password", vModel: "repeatPassword", name: "repeatPassword", type: "password", labelPlacement: "stacked" },
+];
 
 </script>
 
@@ -86,45 +90,15 @@ const onSignup = () => {
     <ion-content :translucent="true">
       <form @submit.prevent="onSignup">
         <ion-list>
-          <ion-item>
+          <ion-item v-for="(input, index) in ionInputs" :key="index">
             <ion-input
-                labelPlacement="stacked"
-                label="Email"
-                v-model="email"
-                name="username"
-                type="text"
+                :label-placement="input.labelPlacement"
+                :label="input.label"
+                v-model="input.vModel"
+                :name="input.name"
+                :type="input.type"
                 required
-            ></ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-input
-                labelPlacement="stacked"
-                label="Username"
-                v-model="username"
-                name="username"
-                type="text"
-                required
-            ></ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-input
-                labelPlacement="stacked"
-                label="Password"
-                v-model="password"
-                name="password"
-                type="password"
-                required
-            ></ion-input>
-          </ion-item>
-          <ion-item>
-            <ion-input
-                labelPlacement="stacked"
-                label="Repeat password"
-                v-model="repeatPassword"
-                name="password"
-                type="password"
-                required
-            ></ion-input>
+            />
           </ion-item>
         </ion-list>
           <ion-list inset lines="none" id="btns">

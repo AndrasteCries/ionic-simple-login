@@ -2,23 +2,23 @@
 
 import {
   IonButton,
+  IonButtons,
+  IonCol,
   IonContent,
   IonHeader,
-  IonPage,
-  IonTitle,
-  IonToolbar,
   IonInput,
   IonItem,
   IonList,
-  IonCol,
-  IonRow,
-  IonButtons,
   IonMenuButton,
-
+  IonPage,
+  IonRow,
+  IonTitle,
+  IonToolbar,
 } from "@ionic/vue";
-import { ref } from "vue"
-import { useStore } from "vuex";
-import { useRouter } from 'vue-router';
+import {ref} from "vue"
+import {useStore} from "vuex";
+import {useRouter} from 'vue-router';
+import {IMyIonInputs} from '@/components/interfaces/IMyIonInputs'
 
 const login = ref("admin");
 const password = ref("admin");
@@ -26,12 +26,17 @@ const password = ref("admin");
 const router = useRouter();
 const store = useStore();
 
-function loginHandle() {
+const loginHandle = () => {
   if (password.value === login.value && login.value === 'admin') {
     store.dispatch('store/login', { username: login.value, password: password.value });
     router.push('/profile');
   }
 }
+
+const ionInputs: IMyIonInputs[] = [
+  { label: "Username", vModel: "login", name: "username", type: "text", labelPlacement: "stacked" },
+  { label: "Password", vModel: "password", name: "password", type: "password", labelPlacement: "stacked" },
+];
 
 </script>
 
@@ -48,26 +53,15 @@ function loginHandle() {
     <ion-content :fullscreen="true">
       <form novalidate @submit.prevent="loginHandle">
         <ion-list>
-          <ion-item>
+          <ion-item v-for="(input, index) in ionInputs" :key="index">
             <ion-input
-                label="Username"
-                labelPlacement="stacked"
-                v-model="login"
-                name="username"
-                type="text"
+                :label-placement="input.labelPlacement"
+                :label="input.label"
+                v-model="input.vModel"
+                :name="input.name"
+                :type="input.type"
                 required
-            ></ion-input>
-          </ion-item>
-
-          <ion-item>
-            <ion-input
-                labelPlacement="stacked"
-                label="Password"
-                v-model="password"
-                name="password"
-                type="password"
-                required
-            ></ion-input>
+            />
           </ion-item>
         </ion-list>
 
