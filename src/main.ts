@@ -1,8 +1,8 @@
-import { createApp } from 'vue'
+import {createApp} from 'vue'
 import App from './App.vue'
 import router from './router';
 
-import { IonicVue } from '@ionic/vue';
+import {IonicVue} from '@ionic/vue';
 
 import '@ionic/vue/css/core.css';
 
@@ -19,9 +19,10 @@ import '@ionic/vue/css/display.css';
 
 import './theme/variables.css';
 
-import store from '@/stores';
+import store from '@/store';
 
-import { defineCustomElements } from '@ionic/pwa-elements/loader';
+import {defineCustomElements} from '@ionic/pwa-elements/loader';
+
 defineCustomElements(window);
 
 const app = createApp(App)

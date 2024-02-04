@@ -1,6 +1,6 @@
-import { createRouter, createWebHistory } from '@ionic/vue-router';
-import { RouteRecordRaw } from 'vue-router';
-import store from '@/stores/index';
+import {createRouter, createWebHistory} from '@ionic/vue-router';
+import {RouteRecordRaw} from 'vue-router';
+import store from '@/store/index';
 import Profile from '@/pages/Profile/Profile.vue';
 import Login from "@/pages/Auth/Login.vue";
 import Home from "@/pages/Home.vue";
