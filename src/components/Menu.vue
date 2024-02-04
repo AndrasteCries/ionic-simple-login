@@ -1,18 +1,9 @@
 <script setup lang="ts">
 import {computed, ref} from 'vue';
-import {
-  IonContent,
-  IonIcon,
-  IonItem,
-  IonLabel,
-  IonList,
-  IonListHeader,
-  IonMenu,
-  IonMenuToggle,
-} from '@ionic/vue';
+import {IonContent, IonIcon, IonItem, IonLabel, IonList, IonListHeader, IonMenu, IonMenuToggle,} from '@ionic/vue';
 import * as ionIcons from 'ionicons/icons';
-import { useRouter } from 'vue-router';
-import { useStore } from 'vuex';
+import {useRouter} from 'vue-router';
+import {useStore} from 'vuex';
 
 const router = useRouter();
 const store = useStore();
@@ -20,13 +11,9 @@ const loggedIn = ref(false);
 
 const isAuthenticated = computed(() => store.getters['store/isAuthenticated']);
 
-const navigate = (url: string) => {
-  router.push(url);
-}
-
 const logout = () => {
   store.dispatch('store/logout');
-  navigate('/home')
+  router.push('/login')
 };
 
 
@@ -40,7 +27,7 @@ const logout = () => {
           Main menu
         </ion-list-header>
         <ion-menu-toggle :auto-hide="false">
-          <ion-item button @click="navigate('/home')">
+          <ion-item button @click="router.push('/home')">
             <ion-icon slot="start" :icon="ionIcons.homeSharp"></ion-icon>
             <ion-label>
               Home
@@ -48,7 +35,7 @@ const logout = () => {
           </ion-item>
         </ion-menu-toggle>
         <ion-menu-toggle :auto-hide="false">
-          <ion-item button @click="navigate('/profile')">
+          <ion-item button @click="router.push('/profile')">
             <ion-icon slot="start" :icon="ionIcons.people"></ion-icon>
             <ion-label>
               Profile
@@ -56,7 +43,7 @@ const logout = () => {
           </ion-item>
         </ion-menu-toggle>
         <ion-menu-toggle v-if="!isAuthenticated" :auto-hide="false">
-          <ion-item button @click="navigate('/login')">
+          <ion-item button @click="router.push('/login')">
             <ion-icon slot="start" :icon="ionIcons.logIn"></ion-icon>
             <ion-label>
               Login
@@ -64,8 +51,8 @@ const logout = () => {
           </ion-item>
         </ion-menu-toggle>
         <ion-menu-toggle v-if="!isAuthenticated" :auto-hide="false">
-          <ion-item button @click="navigate('/register')">
-            <ion-icon slot="start" :icon="ionIcons.personAdd"></ion-icon>
+          <ion-item button @click="router.push('/register')">
+          <ion-icon slot="start" :icon="ionIcons.personAdd"></ion-icon>
             <ion-label>
               Signup
             </ion-label>
